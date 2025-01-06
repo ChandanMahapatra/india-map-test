@@ -36,8 +36,23 @@
 	];
 </script>
 
-<main>
-	<h1>India Map</h1>
-	<Dropdown {selectedState} {states} />
-	<Map {selectedState} />
-</main>
+<div class="flex flex-col h-screen">
+	<!-- Header -->
+	<header class="bg-gray-800 text-white p-4 flex items-center justify-between">
+		<h1 class="text-xl font-bold">India Map</h1>
+		<div class="flex gap-4">
+			<Dropdown {selectedState} {states} />
+			<button
+				on:click={() => selectedState.set('')}
+				class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
+			>
+				Home
+			</button>
+		</div>
+	</header>
+
+	<!-- Map Section -->
+	<main class="">
+		<Map {selectedState} />
+	</main>
+</div>

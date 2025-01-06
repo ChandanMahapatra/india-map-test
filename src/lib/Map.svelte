@@ -7,55 +7,54 @@
 
 	let map;
 	let mapContainer;
-
-	const geojsonUrl = '/states_india.geojson'; // Path to your GeoJSON
+	const originalCenter = [78.9629, 22.5937]; // Center of India
+	const originalZoom = 4;
+	const geojsonUrl = '/india-states.geojson'; // Path to your GeoJSON file
 
 	onMount(() => {
 		map = new maplibregl.Map({
 			container: mapContainer,
 			style: 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json',
-			center: [78.9629, 22.5937], // Center of India
-			zoom: 4
+			center: originalCenter,
+			zoom: originalZoom
 		});
 
 		map.on('load', () => {
-			// Add GeoJSON source
-			map.addSource('india-states', {
-				type: 'geojson',
-				data: geojsonUrl
-			});
-
-			// Add state boundaries layer
+			map.addSource('india-states', { type: 'geojson', data: geojsonUrl });
 			map.addLayer({
 				id: 'state-boundaries',
 				type: 'line',
 				source: 'india-states',
-				paint: {
-					'line-color': '#000',
-					'line-width': 2
-				}
+				paint: { 'line-color': '#000', 'line-width': 2 }
 			});
-
-			// Add highlight layer
 			map.addLayer({
 				id: 'state-highlight',
 				type: 'fill',
 				source: 'india-states',
-				paint: {
-					'fill-color': '#FF0000',
-					'fill-opacity': 0.5
-				},
-				filter: ['==', 'NAME_1', ''] // Default no highlight
+				paint: { 'fill-color': '#FF0000', 'fill-opacity': 0.5 },
+				filter: ['==', 'st_nm', '']
 			});
-
-			// Update highlight when selectedState changes
 			selectedState.subscribe((stateName) => {
-				map.setFilter('state-highlight', ['==', 'NAME_1', stateName]);
+				map.setFilter('state-highlight', ['==', 'st_nm', stateName]);
+				const features = map.querySourceFeatures('india-states', {
+					filter: ['==', 'st_nm', stateName]
+				});
+				if (features.length > 0) {
+					const bbox = features[0].geometry.coordinates.reduce(
+						(bounds, coord) => coord.reduce((b, [lng, lat]) => b.extend([lng, lat]), bounds),
+						new maplibregl.LngLatBounds()
+					);
+					map.fitBounds(bbox, { padding: 20 });
+				}
 			});
 		});
 
 		return () => map.remove();
 	});
+
+	function resetMap() {
+		map.flyTo({ center: originalCenter, zoom: originalZoom });
+	}
 </script>
 
-<div bind:this={mapContainer} style="width: 100%; height: 500px;"></div>
+<div bind:this={mapContainer} class=""></div>

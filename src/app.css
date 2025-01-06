@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.maplibregl-canvas {
+	height: 1080px !important;
+}
+
+.maplibregl-canvas-container {
+	height: 1080px !important;
+}

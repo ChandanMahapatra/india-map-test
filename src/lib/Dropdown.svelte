@@ -1,10 +1,12 @@
 <script>
-	import { writable } from 'svelte/store';
-	export let selectedState = writable('');
+	export let selectedState;
 	export let states = [];
 </script>
 
-<select on:change={(e) => selectedState.set(e.target.value)}>
+<select
+	class="bg-gray-700 text-white p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+	on:change={(e) => selectedState.set(e.target.value)}
+>
 	<option value="" disabled selected>Select a state</option>
 	{#each states as state}
 		<option value={state}>{state}</option>
