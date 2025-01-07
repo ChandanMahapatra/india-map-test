@@ -12,7 +12,7 @@
 	const geojsonUrl =
 		import.meta.env.MODE === 'development'
 			? '/india-states.geojson'
-			: 'https://github.com/ChandanMahapatra/india-map-test/blob/gh-pages/india-states.geojson';
+			: 'https://raw.githubusercontent.com/ChandanMahapatra/india-map-test/gh-pages/india-states.geojson';
 
 	onMount(() => {
 		map = new maplibregl.Map({
