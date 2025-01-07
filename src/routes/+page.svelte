@@ -2,6 +2,7 @@
 	import Map from '$lib/Map.svelte';
 	import Dropdown from '$lib/Dropdown.svelte';
 	import { writable } from 'svelte/store';
+	import '../app.css';
 
 	const selectedState = writable('');
 	const states = [
@@ -34,16 +35,23 @@
 		'Uttarakhand',
 		'West Bengal'
 	];
+
+	let mapRef;
+
+	// Use mapRef to call the resetMap method from the Map component
+	function resetMapView() {
+		mapRef?.resetMap();
+	}
 </script>
 
 <div class="flex flex-col h-screen">
 	<!-- Header -->
 	<header class="bg-gray-800 text-white p-4 flex items-center justify-between">
-		<h1 class="text-xl font-bold">India Map</h1>
+		<h1 class="text-xl font-bold">India Road Accidents Map</h1>
 		<div class="flex gap-4">
 			<Dropdown {selectedState} {states} />
 			<button
-				on:click={() => selectedState.set('')}
+				on:click={resetMapView}
 				class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
 			>
 				Home
@@ -52,7 +60,7 @@
 	</header>
 
 	<!-- Map Section -->
-	<main class="">
-		<Map {selectedState} />
+	<main class="flex-grow">
+		<Map bind:this={mapRef} {selectedState} />
 	</main>
 </div>
