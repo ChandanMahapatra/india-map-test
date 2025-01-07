@@ -38,7 +38,7 @@ jobs:
         env:
           BASE_PATH: ${{ github.event.repository.name }}
 
-     - name: Deploy to GitHub Pages
+      - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           clean-exclude: 'pr-preview'
