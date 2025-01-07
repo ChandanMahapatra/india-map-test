@@ -9,7 +9,9 @@
 	let mapContainer;
 	const originalCenter = [81.9629, 22.5937]; // Center of India
 	const originalZoom = 3.6;
-	const geojsonUrl = '/india-states.geojson'; // Path to your GeoJSON file
+	const geojsonUrl = import.meta.env.MODE === 'development' 
+		? '/india-states.geojson' 
+		: 'https://github.com/ChandanMahapatra/india-map-test/blob/gh-pages/india-states.geojson';
 
 	onMount(() => {
 		map = new maplibregl.Map({
