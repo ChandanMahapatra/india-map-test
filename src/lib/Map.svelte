@@ -56,7 +56,7 @@
 	const allStateAccidentsDataUrl = 
 			import.meta.env.MODE === 'development'
 			? '/total_accidents.csv'
-			: 'https://raw.githubusercontent.com/ChandanMahapatra/india-map-test/gh-pages/india-states.geojson';
+			: 'https://raw.githubusercontent.com/ChandanMahapatra/india-map-test/refs/heads/master/static/total_accidents.csv';
 
 	onMount(() => {
 		map = new maplibregl.Map({
