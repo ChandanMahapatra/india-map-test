@@ -1,9 +1,48 @@
-<script>
+<script lang="ts">
 	import maplibregl from 'maplibre-gl';
 	import { onMount } from 'svelte';
 	import { writable } from 'svelte/store';
+	import Papa from 'papaparse';
 
 	export let selectedState = writable('');
+
+	interface stateAccident 
+	{ 
+		id: int; 
+		state_name: string; 
+		total_accidents_2018: int;
+		total_accidents_2019: int;
+		total_accidents_2020: int;
+		total_accidents_2021: int;
+		total_accidents_2022: int;
+		abs_change_in_2022: int;
+		rel_change_in_2022: int;
+		rank_2018: int;
+		rank_2019: int;
+		rank_2020: int;
+		rank_2021: int;
+		rank_2022: int;
+	};
+
+	function transformRow(row: any) : stateAccident
+	{
+		return {
+			id: row.Sr_No,
+			state_name: row.State_Name,
+			total_accidents_2018: row._2018,
+			total_accidents_2019: row._2019,
+			total_accidents_2020: row._2020,
+			total_accidents_2021: row._2021,
+			total_accidents_2022: row._2022,
+			abs_change_in_2022: row.Absolute_Change_in_2022_over_2021,
+			rel_change_in_2022: row.percent_change_in_2022_over_2021,
+			rank_2018: row.rank_2018,
+			rank_2019: row.rank_2019,
+			rank_2020: row.rank_2020,
+			rank_2021: row.rank_2021,
+			rank_2022: row.rank_2022
+		};
+	}
 
 	let map;
 	let mapContainer;
@@ -12,6 +51,11 @@
 	const geojsonUrl =
 		import.meta.env.MODE === 'development'
 			? '/india-states.geojson'
+			: 'https://raw.githubusercontent.com/ChandanMahapatra/india-map-test/gh-pages/india-states.geojson';
+
+	const allStateAccidentsDataUrl = 
+			import.meta.env.MODE === 'development'
+			? '/total_accidents.csv'
 			: 'https://raw.githubusercontent.com/ChandanMahapatra/india-map-test/gh-pages/india-states.geojson';
 
 	onMount(() => {
@@ -50,6 +94,18 @@
 					'fill-opacity': 0.5
 				},
 				filter: ['==', 'st_nm', ''] // No state highlighted by default
+			});
+
+			let stateAccidents: stateAccident[]; 
+			Papa.parse<stateAccident>(allStateAccidentsDataUrl, {
+				download: true,
+				header: true,
+				dynamicTyping: true,
+				complete: function(results) { 
+					stateAccidents = results.data.map(transformRow);
+					console.log('Parsed Data:', stateAccidents); 
+					//console.log(stateAccidents[0].total_accidents_2018);
+				}
 			});
 
 			// Listen to changes in the selected state
