@@ -1,6 +1,6 @@
 <script>
 	export let selectedState;
-	export let states = [];
+	export let stateAccidents;
 </script>
 
 <select
@@ -8,7 +8,7 @@
 	on:change={(e) => selectedState.set(e.target.value)}
 >
 	<option value="" disabled selected>Select a state</option>
-	{#each states as state}
-		<option value={state}>{state}</option>
+	{#each stateAccidents as stateAccident}
+		<option value={stateAccident.state_name}>{stateAccident.state_name}</option>
 	{/each}
 </select>
