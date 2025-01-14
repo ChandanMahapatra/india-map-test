@@ -35,7 +35,11 @@
 			.then(geojsonData => {
 				// Merge the data into GeoJSON properties
 				geojsonData.features.forEach(feature => {
+					//too bad O(n^2), fix later
       				feature.properties.accidentsStat = stateAccidents.find((element) => element.state_name == feature.properties.shapeName) || 0; // Default to 0 if no data
+					
+					//I am not able to query property from nested object, hence add data directly properties object in json
+					feature.properties.accidents = feature.properties.accidentsStat.total_accidents_2022;
 				});
 				console.log(geojsonData);
 
@@ -51,35 +55,40 @@
 					type: 'line',
 					source: 'india-states',
 					paint: {
-						'line-color': '#000',
-						'line-width': 2
+						'line-color': '#6a6a6a',
+						'line-width': 0.25
 					}
 				});
 
-				  // Add a fill layer for the choropleth polygons
-				map.addLayer({
-					'id': 'accident-layer',
-					'type': 'fill',
-					'source': 'india-states',
-					'paint': {
-					// Style polygons based on the value
-					'fill-color': [
-						'case',
-        				// Check if 'accidentsStat.total_accidents_2022' is not null or undefined
-        				['!=', ['get', 'accidentsStat.total_accidents_2022'], null], 
-						['interpolate',
-						['linear'],
-						['get', 'accidentsStat.total_accidents_2022'],
-						0, '#ff0000', // lowest values
-  						5000, '#fff000', // middle values
-  						20000, '#ffff00' // highest values
-						],
-						'#ff0000',  // Default color for null population
-					],
-					'fill-opacity': 0.7
+				map.on('sourcedata', (e) => {
+					if(e.sourceId === 'india-states' && e.isSourceLoaded)
+					{
+						// Add a fill layer for the choropleth polygons
+						map.addLayer({
+							'id': 'accident-layer',
+							'type': 'fill',
+							'source': 'india-states',
+							'paint': {
+							// Style polygons based on the value
+							'fill-color': [
+								'case',
+								// Check if 'accidentsStat.total_accidents_2022' is not null or undefined
+								['!=', ['get', 'accidents'], null], 
+								['interpolate',
+								['linear'],
+								['get', 'accidents'],
+								0, '#e3ebff', // lowest values
+								25000, '#044afb', // middle values
+								50000, '#011954' // highest values
+								],
+								'#fff000',  // Default color for null population
+							],
+							'fill-opacity': 0.7
+							}
+						});
 					}
 				});
-
+				  
 				// Add a layer for highlighting the selected state
 				map.addLayer({
 					id: 'state-highlight',
