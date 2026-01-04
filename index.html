@@ -1,0 +1,617 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>India Road Accidents Map - OpenFreeMap + MapLibre</title>
+		<link href="https://unpkg.com/maplibre-gl/dist/maplibre-gl.css" rel="stylesheet" />
+		<script src="https://unpkg.com/maplibre-gl/dist/maplibre-gl.js"></script>
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+				box-sizing: border-box;
+			}
+			html,
+			body {
+				height: 100%;
+				margin: 0px;
+				padding: 0px;
+			}
+			body {
+				font-family:
+					system-ui,
+					-apple-system,
+					sans-serif;
+				overflow: hidden;
+			}
+			#app {
+				display: flex;
+				flex-direction: column;
+				height: 100vh;
+				width: 100vw;
+				overflow: hidden;
+				margin: 0px;
+				padding: 0px;
+			}
+
+			header {
+				background: #1f2937;
+				color: white;
+				padding: 1rem;
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				z-index: 10;
+				flex-shrink: 0;
+				margin: 0px;
+			}
+
+			header h1 {
+				font-size: 1.25rem;
+				font-weight: 600;
+			}
+
+			.controls {
+				display: flex;
+				gap: 0.75rem;
+				align-items: center;
+			}
+
+			.controls select {
+				background: #374151;
+				color: white;
+				padding: 0.5rem 1rem;
+				border-radius: 0.375rem;
+				border: none;
+				cursor: pointer;
+				font-size: 0.875rem;
+				min-width: 180px;
+			}
+
+			.controls button {
+				padding: 0.5rem 1rem;
+				border-radius: 0.375rem;
+				border: none;
+				cursor: pointer;
+				font-weight: 500;
+				font-size: 0.875rem;
+				transition: background-color 0.2s;
+				background: #3b82f6;
+				color: white;
+			}
+			.controls button:hover {
+				background: #2563eb;
+			}
+
+			.github-link {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				width: 36px;
+				height: 36px;
+				border-radius: 0.375rem;
+				background: #374151;
+				color: white;
+				transition: background-color 0.2s;
+				text-decoration: none;
+			}
+			.github-link:hover {
+				background: #4b5563;
+			}
+
+			#map-container {
+				flex: 1;
+				position: relative;
+				width: 100%;
+				overflow: hidden;
+				margin: 0px;
+				padding: 0px;
+			}
+			#map {
+				width: 100%;
+				height: 100%;
+			}
+
+			.maplibregl-ctrl-top-right {
+				top: 80px;
+				right: 10px;
+			}
+			.maplibregl-ctrl-bottom-left {
+				bottom: 10px;
+				left: 10px;
+			}
+
+			.maplibregl-popup-content {
+				padding: 12px;
+				border-radius: 8px;
+				font-family: system-ui, sans-serif;
+			}
+
+			.maplibregl-popup-close-button {
+				position: absolute;
+				top: 4px;
+				right: 4px;
+				width: 24px;
+				height: 24px;
+				padding: 0;
+				margin: 0;
+				border: none;
+				background: rgba(0, 0, 0, 0.1);
+				border-radius: 50%;
+				cursor: pointer;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				font-size: 18px;
+				line-height: 1;
+				color: #333;
+				transition: background-color 0.2s;
+				z-index: 10;
+			}
+
+			.maplibregl-popup-close-button:hover {
+				background: rgba(0, 0, 0, 0.2);
+			}
+			.maplibregl-popup {
+				max-width: 280px !important;
+			}
+			.maplibregl-popup-tip {
+				display: none;
+			}
+
+			.legend {
+				position: absolute;
+				bottom: 30px;
+				right: 10px;
+				background: rgba(255, 255, 255, 0.95);
+				padding: 12px;
+				border-radius: 8px;
+				font-size: 12px;
+				z-index: 5;
+				box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+			}
+
+			.legend h4 {
+				margin: 0 0 8px 0;
+				font-size: 12px;
+				font-weight: 600;
+			}
+			.legend-item {
+				display: flex;
+				align-items: center;
+				gap: 8px;
+				margin: 4px 0;
+			}
+			.legend-color {
+				width: 20px;
+				height: 12px;
+				border-radius: 2px;
+			}
+
+			.sr-only {
+				position: absolute;
+				width: 1px;
+				height: 1px;
+				padding: 0;
+				margin: -1px;
+				overflow: hidden;
+				clip: rect(0, 0, 0, 0);
+				white-space: nowrap;
+				border: 0;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="app">
+			<header role="banner">
+				<h1>India Road Accidents Map</h1>
+				<div class="controls">
+					<label for="state-select" class="sr-only">Select a state</label>
+					<select id="state-select" aria-label="Select a state">
+						<option value="">Select a state</option>
+					</select>
+					<button id="reset-view" aria-label="Reset view">Home</button>
+					<a
+						href="https://github.com/ChandanMahapatra/india-map-test"
+						target="_blank"
+						rel="noopener noreferrer"
+						class="github-link"
+						aria-label="View source code on GitHub"
+					>
+						<svg height="20" viewBox="0 0 16 16" width="20" fill="currentColor">
+							<path
+								d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"
+							/>
+						</svg>
+					</a>
+				</div>
+			</header>
+			<main id="map-container" role="main">
+				<div id="map"></div>
+				<div class="legend" role="region" aria-label="Color legend">
+					<h4>Accidents 2022</h4>
+					<div class="legend-item">
+						<div class="legend-color" style="background: #8dd3c7"></div>
+						<span>0 - 10K</span>
+					</div>
+					<div class="legend-item">
+						<div class="legend-color" style="background: #ffffb3"></div>
+						<span>10K - 20K</span>
+					</div>
+					<div class="legend-item">
+						<div class="legend-color" style="background: #bebada"></div>
+						<span>20K - 35K</span>
+					</div>
+					<div class="legend-item">
+						<div class="legend-color" style="background: #fb8072"></div>
+						<span>35K - 50K</span>
+					</div>
+					<div class="legend-item">
+						<div class="legend-color" style="background: #80b1d3"></div>
+						<span>50K+</span>
+					</div>
+				</div>
+			</main>
+		</div>
+
+		<script>
+			const STYLE_URL = 'https://tiles.openfreemap.org/styles/bright';
+			const COLOR_PALETTE = ['#8DD3C7', '#FFFFB3', '#BEBADA', '#FB8072', '#80B1D3'];
+			const INDIA_BOUNDS = [68.1, 6.5, 97.4, 35.5];
+			const INITIAL_CENTER = [78.9629, 20.5937];
+			const INITIAL_ZOOM = 4;
+
+			let map,
+				popup = null,
+				hoveredStateId = null,
+				stateAccidentsData = [];
+
+			const stateNameMapping = {
+				'Andaman & Nicobar Island': 'Andaman and Nicobar Islands',
+				'Daman & Diu': 'D & N Haveli & Daman & Diu',
+				'NCT of Delhi': 'Delhi',
+				'Jammu & Kashmir': 'Jammu and Kashmir',
+				'Dadara & Nagar Havelli': 'D & N Haveli & Daman & Diu',
+				Puducherry: 'Pondicherry'
+			};
+
+			function normalizeString(str) {
+				if (!str) return '';
+				return str
+					.trim()
+					.toLowerCase()
+					.replace(/[^a-z0-9]/g, '');
+			}
+
+			function getStateName(props) {
+				return props.shapeName || props.st_nm;
+			}
+
+			function getMatchingStateName(geojsonName) {
+				if (!geojsonName) return undefined;
+
+				const normalized = normalizeString(geojsonName);
+				console.log('Looking for match for:', geojsonName, '-> normalized:', normalized);
+
+				for (const accident of stateAccidentsData) {
+					const csvName = normalizeString(accident.State_Name);
+					if (csvName === normalized) {
+						console.log('Found direct match:', accident.State_Name);
+						return accident.State_Name;
+					}
+				}
+
+				const mappedName = stateNameMapping[geojsonName];
+				if (mappedName) {
+					console.log('Found mapped name:', mappedName);
+					return mappedName;
+				}
+
+				console.log('No match found for:', geojsonName);
+				return undefined;
+			}
+
+			function removeStateLayers() {
+				const layerIds = [
+					'state-fill',
+					'state-fill-hover',
+					'state-boundaries',
+					'state-hover-outline',
+					'state-highlight',
+					'state-label'
+				];
+				layerIds.forEach((id) => {
+					if (map?.getLayer(id)) map.removeLayer(id);
+				});
+				if (map?.getSource('india-states')) map.removeSource('india-states');
+			}
+
+			function setupEventHandlers() {
+				map.off('mouseenter', 'state-fill');
+				map.off('mouseleave', 'state-fill');
+				map.off('mousemove', 'state-fill');
+				map.off('click', 'state-fill');
+				map.off('click');
+
+				map.on('mouseenter', 'state-fill', () => (map.getCanvas().style.cursor = 'pointer'));
+				map.on('mouseleave', 'state-fill', () => (map.getCanvas().style.cursor = ''));
+
+				map.on('mousemove', (e) => {
+					const features = map.queryRenderedFeatures(e.point, { layers: ['state-fill'] });
+					if (features.length > 0) {
+						const stateName = features[0].properties.stateName;
+						if (stateName && stateName !== hoveredStateId) {
+							hoveredStateId = stateName;
+							map.setFilter('state-hover-outline', ['==', ['get', 'stateName'], stateName]);
+							map.setFilter('state-fill-hover', ['==', ['get', 'stateName'], stateName]);
+						}
+					} else if (hoveredStateId !== null) {
+						hoveredStateId = null;
+						map.setFilter('state-hover-outline', ['==', ['get', 'stateName'], '']);
+						map.setFilter('state-fill-hover', ['==', ['get', 'stateName'], '']);
+					}
+				});
+
+				map.on('click', 'state-fill', (e) => {
+					const feature = e.features[0];
+					const stateName = feature.properties.displayStateName || feature.properties.stateName;
+					const accidentData = feature.properties.accidentsStat;
+
+					if (stateName) {
+						document.getElementById('state-select').value = stateName;
+						map.setFilter('state-highlight', ['==', ['get', 'displayStateName'], stateName]);
+
+						if (popup) popup.remove();
+						popup = new maplibregl.Popup({
+							closeButton: true,
+							closeOnClick: true,
+							maxWidth: '280px'
+						})
+							.setLngLat(e.lngLat)
+							.setHTML(
+								`<div style="padding: 12px; font-family: system-ui, sans-serif;">
+									<h3 style="margin: 0 0 10px 0; font-weight: 600; font-size: 15px;">${stateName}</h3>
+									<p style="margin: 6px 0; font-size: 13px;"><strong>2022 Accidents:</strong> ${accidentData?.total_accidents_2022?.toLocaleString() || 'N/A'}</p>
+									<p style="margin: 6px 0; font-size: 13px;"><strong>Rank:</strong> ${accidentData?.rank_2022 || 'N/A'}</p>
+								</div>`
+							)
+							.addTo(map);
+
+						zoomToState(stateName);
+					}
+				});
+
+				map.on('click', (e) => {
+					const features = map.queryRenderedFeatures(e.point, { layers: ['state-fill'] });
+					if (!features || features.length === 0) {
+						if (popup) {
+							popup.remove();
+							popup = null;
+						}
+					}
+				});
+			}
+
+			async function initMap() {
+				map = new maplibregl.Map({
+					container: 'map',
+					style: STYLE_URL,
+					center: INITIAL_CENTER,
+					zoom: INITIAL_ZOOM,
+					attributionControl: { compact: true }
+				});
+
+				map.addControl(
+					new maplibregl.NavigationControl({ showZoom: true, showCompass: false }),
+					'top-right'
+				);
+				map.addControl(new maplibregl.ScaleControl(), 'bottom-left');
+
+				map.on('load', async () => {
+					await loadStateData();
+					await loadGeoJSON();
+				});
+			}
+
+			async function loadStateData() {
+				try {
+					const response = await fetch(
+						'https://raw.githubusercontent.com/ChandanMahapatra/india-map-test/refs/heads/master/static/total_accidents.csv'
+					);
+					const csvText = await response.text();
+					const lines = csvText.trim().split('\n');
+					const headers = lines[0].split(',');
+
+					stateAccidentsData = lines.slice(1).map((line) => {
+						const values = line.split(',');
+						const obj = {};
+						headers.forEach((header, i) => (obj[header.trim()] = values[i]?.trim()));
+						return obj;
+					});
+
+					const select = document.getElementById('state-select');
+					stateAccidentsData.forEach((row) => {
+						const option = document.createElement('option');
+						option.value = row.State_Name;
+						option.textContent = row.State_Name;
+						select.appendChild(option);
+					});
+				} catch (error) {
+					console.error('Error loading data:', error);
+				}
+			}
+
+			async function loadGeoJSON() {
+				try {
+					removeStateLayers();
+
+					const response = await fetch(
+						'https://raw.githubusercontent.com/ChandanMahapatra/india-map-test/gh-pages/india-states.geojson'
+					);
+					const geojson = await response.json();
+
+					const accidentsMap = new Map();
+					stateAccidentsData.forEach((accident) => accidentsMap.set(accident.State_Name, accident));
+
+					geojson.features.forEach((feature) => {
+						const geojsonStateName = getStateName(feature.properties);
+						const matchingCsvName = getMatchingStateName(geojsonStateName || '');
+						let accidentData = null;
+
+						if (matchingCsvName) {
+							accidentData = accidentsMap.get(matchingCsvName) || null;
+						}
+
+						feature.properties.accidentsStat = accidentData || null;
+						feature.properties.accidents = accidentData
+							? parseInt(accidentData._2022?.replace(/,/g, '') || 0)
+							: null;
+						feature.properties.stateName = geojsonStateName;
+						feature.properties.displayStateName = matchingCsvName || geojsonStateName;
+					});
+
+					map.addSource('india-states', { type: 'geojson', data: geojson, tolerance: 1 });
+
+					map.addLayer({
+						id: 'state-fill',
+						type: 'fill',
+						source: 'india-states',
+						paint: {
+							'fill-color': [
+								'interpolate',
+								['linear'],
+								['get', 'accidents'],
+								0,
+								COLOR_PALETTE[0],
+								10000,
+								COLOR_PALETTE[1],
+								20000,
+								COLOR_PALETTE[2],
+								35000,
+								COLOR_PALETTE[3],
+								50000,
+								COLOR_PALETTE[4]
+							],
+							'fill-opacity': 0.7
+						},
+						filter: ['!=', ['get', 'accidents'], null]
+					});
+
+					map.addLayer({
+						id: 'state-fill-hover',
+						type: 'fill',
+						source: 'india-states',
+						paint: {
+							'fill-color': [
+								'interpolate',
+								['linear'],
+								['get', 'accidents'],
+								0,
+								COLOR_PALETTE[0],
+								10000,
+								COLOR_PALETTE[1],
+								20000,
+								COLOR_PALETTE[2],
+								35000,
+								COLOR_PALETTE[3],
+								50000,
+								COLOR_PALETTE[4]
+							],
+							'fill-opacity': 0.4
+						},
+						filter: ['==', ['get', 'stateName'], '']
+					});
+
+					map.addLayer({
+						id: 'state-boundaries',
+						type: 'line',
+						source: 'india-states',
+						paint: { 'line-color': '#999999', 'line-width': 1, 'line-opacity': 0.8 }
+					});
+
+					map.addLayer({
+						id: 'state-hover-outline',
+						type: 'line',
+						source: 'india-states',
+						paint: { 'line-color': '#333333', 'line-width': 3, 'line-opacity': 1 },
+						filter: ['==', ['get', 'stateName'], '']
+					});
+
+					map.addLayer({
+						id: 'state-highlight',
+						type: 'fill',
+						source: 'india-states',
+						paint: { 'fill-color': '#FF0000', 'fill-opacity': 0.5 },
+						filter: ['==', ['get', 'stateName'], '']
+					});
+
+					setupEventHandlers();
+					map.fitBounds(INDIA_BOUNDS, { padding: 50, duration: 0 });
+				} catch (error) {
+					console.error('Error loading GeoJSON:', error);
+				}
+			}
+
+			function calculateBounds(features) {
+				if (!features.length) return null;
+				const bounds = new maplibregl.LngLatBounds();
+				features.forEach((feature) => {
+					const g = feature.geometry;
+					if (g.type === 'Point') {
+						bounds.extend([g.coordinates[0], g.coordinates[1]]);
+					} else if (g.type === 'Polygon') {
+						g.coordinates[0].forEach((coord) => bounds.extend(coord));
+					} else if (g.type === 'MultiPolygon') {
+						g.coordinates.forEach((poly) => poly[0].forEach((coord) => bounds.extend(coord)));
+					}
+				});
+				return bounds;
+			}
+
+			function zoomToState(stateName) {
+				const features = map.queryRenderedFeatures({
+					layers: ['state-boundaries'],
+					filter: ['==', 'displayStateName', stateName]
+				});
+				if (features.length > 0) {
+					const bounds = calculateBounds(features);
+					if (bounds) map.fitBounds(bounds, { padding: 80, duration: 1000 });
+				}
+			}
+
+			function resetView() {
+				map.flyTo({ center: INITIAL_CENTER, zoom: INITIAL_ZOOM, duration: 1500 });
+				map.fitBounds(INDIA_BOUNDS, { padding: 50, duration: 1500 });
+				document.getElementById('state-select').value = '';
+				map.setFilter('state-highlight', ['==', ['get', 'stateName'], '']);
+				if (popup) {
+					popup.remove();
+					popup = null;
+				}
+			}
+
+			document.getElementById('reset-view').addEventListener('click', resetView);
+			document.getElementById('state-select').addEventListener('change', (e) => {
+				const stateName = e.target.value;
+				if (stateName) {
+					map.setFilter('state-highlight', ['==', ['get', 'displayStateName'], stateName]);
+					zoomToState(stateName);
+					if (popup) {
+						popup.remove();
+						popup = null;
+					}
+				}
+			});
+
+			document.addEventListener('keydown', (e) => {
+				if (e.key === 'Escape' && popup) {
+					popup.remove();
+					popup = null;
+				}
+			});
+
+			initMap();
+		</script>
+	</body>
+</html>
