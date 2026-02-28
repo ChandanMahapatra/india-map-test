@@ -84,6 +84,17 @@
 			}
 		}
 
+		// Fallback: check stateNameMapping for known name differences
+		const mappedName = stateNameMapping[geojsonName];
+		if (mappedName) {
+			const mappedNormalized = normalizeString(mappedName);
+			for (const accident of stateAccidents) {
+				if (normalizeString(accident.state_name) === mappedNormalized) {
+					return accident;
+				}
+			}
+		}
+
 		return undefined;
 	}
 
@@ -367,32 +378,35 @@
 				);
 
 				if (popup) popup.remove();
+
+				const popupEl = document.createElement('div');
+				popupEl.style.cssText = 'padding: 12px; font-family: system-ui, -apple-system, sans-serif;';
+
+				const title = document.createElement('h3');
+				title.style.cssText = 'margin: 0 0 10px 0; font-weight: 600; font-size: 15px; color: #1f2937;';
+				title.textContent = stateName;
+				popupEl.appendChild(title);
+
+				const accidentsValue = matchingAccident
+					? matchingAccident.total_accidents_2022.toLocaleString()
+					: 'N/A';
+				const accidentsP = document.createElement('p');
+				accidentsP.style.cssText = 'margin: 6px 0; font-size: 13px; color: #374151;';
+				accidentsP.innerHTML = `<strong style="color: #111827;">2022 Accidents:</strong> ${accidentsValue}`;
+				popupEl.appendChild(accidentsP);
+
+				const rankP = document.createElement('p');
+				rankP.style.cssText = 'margin: 6px 0; font-size: 13px; color: #374151;';
+				rankP.innerHTML = `<strong style="color: #111827;">Rank:</strong> ${matchingAccident ? matchingAccident.rank_2022 : 'N/A'}`;
+				popupEl.appendChild(rankP);
+
 				popup = new maplibregl.Popup({
 					closeButton: true,
 					closeOnClick: true,
 					maxWidth: '280px'
 				})
 					.setLngLat(e.lngLat)
-					.setHTML(
-						'<div style="padding: 12px; font-family: system-ui, -apple-system, sans-serif;">' +
-							'<h3 style="margin: 0 0 10px 0; font-weight: 600; font-size: 15px; color: #1f2937;">' +
-							stateName +
-							'</h3>' +
-							'<p style="margin: 6px 0; font-size: 13px; color: #374151;">' +
-							'<strong style="color: #111827;">2022 Accidents:</strong> ' +
-							(matchingAccident
-								? String(matchingAccident.total_accidents_2022).replace(
-										/\B(?=(\d{3})+(?!\d))/g,
-										','
-									)
-								: 'N/A') +
-							'</p>' +
-							'<p style="margin: 6px 0; font-size: 13px; color: #374151;">' +
-							'<strong style="color: #111827;">Rank:</strong> ' +
-							(matchingAccident ? matchingAccident.rank_2022 : 'N/A') +
-							'</p>' +
-							'</div>'
-					)
+					.setDOMContent(popupEl)
 					.addTo(m);
 			}
 		});
@@ -493,7 +507,6 @@
 	export function resetMap(): void {
 		const m = map;
 		if (m) {
-			m.flyTo({ center: originalCenter, zoom: originalZoom, duration: 1500 });
 			m.fitBounds([68.1, 6.5, 97.4, 35.5], { padding: 50, duration: 1500 });
 		}
 		selectedState.set('');
@@ -506,6 +519,21 @@
 
 <div class="map-container" role="application" aria-label="India Road Accidents Map">
 	<div bind:this={mapContainer} class="map-canvas"></div>
+	<div class="legend" role="region" aria-label="Color legend">
+		<h4>Accidents 2022</h4>
+		{#each [
+			{ color: colorPalette[0], label: '0 - 10K' },
+			{ color: colorPalette[1], label: '10K - 20K' },
+			{ color: colorPalette[2], label: '20K - 35K' },
+			{ color: colorPalette[3], label: '35K - 50K' },
+			{ color: colorPalette[4], label: '50K+' }
+		] as item}
+			<div class="legend-item">
+				<div class="legend-color" style="background: {item.color}"></div>
+				<span>{item.label}</span>
+			</div>
+		{/each}
+	</div>
 </div>
 
 <style>
@@ -518,6 +546,37 @@
 	.map-canvas {
 		width: 100%;
 		height: 100%;
+	}
+
+	.legend {
+		position: absolute;
+		bottom: 30px;
+		right: 10px;
+		background: rgba(255, 255, 255, 0.95);
+		padding: 12px;
+		border-radius: 8px;
+		font-size: 12px;
+		z-index: 5;
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+	}
+
+	.legend h4 {
+		margin: 0 0 8px 0;
+		font-size: 12px;
+		font-weight: 600;
+	}
+
+	.legend-item {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		margin: 4px 0;
+	}
+
+	.legend-color {
+		width: 20px;
+		height: 12px;
+		border-radius: 2px;
 	}
 
 	:global(.maplibregl-popup-close-button) {
