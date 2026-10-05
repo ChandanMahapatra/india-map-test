@@ -1,0 +1,11 @@
+# Package Managers
+package-lock.json
+pnpm-lock.yaml
+yarn.lock
+build/
+node_modules/
+.svelte-kit/
+.playwright-cli/
+output/
+static/**/*.geojson
+static/boundary-build.json

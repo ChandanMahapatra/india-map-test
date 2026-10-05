@@ -1,0 +1,49 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - master
+
+    # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+# Allow write access to gh-pages branch
+permissions:
+  contents: write
+
+# Allow a single concurrent deployment
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Validate the project
+        run: npm test && npm run lint
+
+      - name: Build the project
+        run: npm run build
+        env:
+          BASE_PATH: ${{ github.event.repository.name }}
+
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          clean-exclude: 'pr-preview'
+          folder: ./build
+          force: false

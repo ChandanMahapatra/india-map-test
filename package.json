@@ -1,0 +1,25 @@
+{
+  "name": "india-aoi-kit",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "vite build",
+    "preview": "vite preview --host 127.0.0.1",
+    "test": "node --test src/lib/*.test.js",
+    "format": "prettier --write .",
+    "lint": "prettier --check src index.html vite.config.js README.md"
+  },
+  "dependencies": {
+    "@base-ui/react": "^1.8.0",
+    "maplibre-gl": "^5.0.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.7.0",
+    "prettier": "^3.3.2",
+    "vite": "^6.4.1"
+  }
+}
