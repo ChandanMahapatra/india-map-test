@@ -126,6 +126,19 @@ The workflow in `.github/workflows/main.yml` tests and builds pushes to `master`
 
 To refresh the screenshot, run the app, restore All India with the Home button, choose a year and capture the complete desktop interface to `docs/screenshot.png`.
 
+## Skill credits
+
+This template is maintained by [Chandan Mahapatra](https://github.com/ChandanMahapatra). The third-party agent skills used to develop it are credited to their original authors:
+
+| Skill collection                                                                                                                                    | Original author / maintainer                                             | How it contributed                                                                               |
+| --------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------ |
+| [MapLibre Agent Skills](https://github.com/maplibre/maplibre-agent-skills)                                                                          | MapLibre contributors, with retained Mapbox credits for adapted material | Source wiring, feature IDs and map integration; other MapLibre skills are bundled for future use |
+| [better-ui and better-colors](https://github.com/jakubkrehel/skills)                                                                                | [Jakub Krehel](https://jakub.kr/skills)                                  | Interface polish, semantic colors, palette and contrast guidance                                 |
+| [Playwright skill](https://github.com/openai/skills/tree/main/skills/.curated/playwright) and [Playwright](https://github.com/microsoft/playwright) | OpenAI and Microsoft, respectively                                       | Browser verification and screenshots; not bundled                                                |
+| [React best-practices guidance](https://github.com/vercel-labs/agent-skills/tree/main/skills/react-best-practices)                                  | Vercel                                                                   | React review through the installed Vercel plugin; not bundled                                    |
+
+Bundled MapLibre and better-\* files are pinned, unmodified upstream snapshots with their original MIT licenses. Local installation or template maintenance does not imply authorship of those skills. [Detailed provenance and usage](.agents/skills/README.md) lists exact revisions and distinguishes applied guidance from optional bundled skills. [Third-party notices](THIRD_PARTY_NOTICES.md) retain contributor and license credits.
+
 ## Agent guidance and bundled skills
 
 [AGENTS.md](AGENTS.md) gives coding agents the project structure, India boundary requirements, selection/data rules, accessibility expectations and verification commands. The portable [.agents/skills bundle](.agents/skills/README.md) contains MapLibre Agent Skills and the better-ui/better-colors skills used during development, with supporting references and provenance. The MapLibre snapshot is pinned and includes its MIT license and notice.

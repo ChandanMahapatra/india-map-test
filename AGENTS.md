@@ -4,7 +4,7 @@ This is a React + Vite application using MapLibre GL JS and Base UI. The referen
 
 ## Skills
 
-Repository skills live in `.agents/skills/`. Use the relevant skill, not every skill on every task. If your agent cannot discover that directory, read the indicated `SKILL.md` directly. See `.agents/skills/README.md` for provenance, versions and additional MapLibre topics.
+Repository skills live in `.agents/skills/`. Use the relevant skill, not every skill on every task. If your agent cannot discover that directory, read the indicated `SKILL.md` directly. See `.agents/skills/README.md` and `THIRD_PARTY_NOTICES.md` for original authors, provenance, versions and additional MapLibre topics. Preserve upstream copyright/license notices and attribution when copying, updating or adapting skills; distinguish skill authorship from this template's implementation and maintenance.
 
 | Task                                                 | Read first                                       |
 | ---------------------------------------------------- | ------------------------------------------------ |
