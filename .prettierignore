@@ -9,3 +9,6 @@ node_modules/
 output/
 static/**/*.geojson
 static/boundary-build.json
+
+# Preserve vendored skill snapshots verbatim
+.agents/skills/

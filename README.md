@@ -125,3 +125,11 @@ The local Noto Sans Regular Latin glyphs in `static/fonts/` were obtained from t
 The workflow in `.github/workflows/main.yml` tests and builds pushes to `master`, then publishes `build/` to `gh-pages`. In repository Settings → Pages, select **Deploy from a branch**, branch **gh-pages**, folder **/ (root)**. If your default branch is `main`, change the workflow trigger accordingly. `BASE_PATH` comes from the repository name, so forks use their own project URL. For a root user site or custom domain, adjust the Vite base path. Update the README app link and screenshot for your copy.
 
 To refresh the screenshot, run the app, restore All India with the Home button, choose a year and capture the complete desktop interface to `docs/screenshot.png`.
+
+## Agent guidance and bundled skills
+
+[AGENTS.md](AGENTS.md) gives coding agents the project structure, India boundary requirements, selection/data rules, accessibility expectations and verification commands. The portable [.agents/skills bundle](.agents/skills/README.md) contains MapLibre Agent Skills and the better-ui/better-colors skills used during development, with supporting references and provenance. The MapLibre snapshot is pinned and includes its MIT license and notice.
+
+For map source/feature-state work, use `maplibre-source-wiring`; for map hierarchy and labels, use `maplibre-cartography`; for local or multilingual fonts, use `maplibre-fonts-glyphs`. Use `better-ui` for component feedback and polish and `better-colors` for semantic palettes and measured contrast. Agents can discover project skills under `.agents/skills/`, or read the task-specific SKILL.md directly when their tool does not support discovery.
+
+When adapting the template, update AGENTS.md with your domain metrics, enabled selection levels, source provenance, boundary representation and deployment conventions. Keep the reusable geometry rules, stable IDs and accessibility checks. Optional migration/terrain/PMTiles skills are available for future work; do not enable those features or upgrade libraries just because the guidance is bundled. The skill bundle is not shipped as map data or a frontend dependency.
