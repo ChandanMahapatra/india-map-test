@@ -1,0 +1,427 @@
+{
+  "years": [
+    2018,
+    2019,
+    2020,
+    2021,
+    2022
+  ],
+  "metric": "Reported road accidents",
+  "geographicLevel": "state",
+  "source": {
+    "name": "Ministry of Road Transport & Highways / PIB",
+    "url": "https://www.pib.gov.in/PressReleseDetailm.aspx?PRID=2042509",
+    "published": "7 August 2024",
+    "table": "Annexure I, calendar years 2018\u20132022"
+  },
+  "totals": {
+    "2018": 470403,
+    "2019": 456959,
+    "2020": 372181,
+    "2021": 412432,
+    "2022": 461312
+  },
+  "records": [
+    {
+      "stateId": "28",
+      "name": "Andhra Pradesh",
+      "values": {
+        "2018": 24475,
+        "2019": 21992,
+        "2020": 19509,
+        "2021": 21556,
+        "2022": 21249
+      }
+    },
+    {
+      "stateId": "12",
+      "name": "Arunachal Pradesh",
+      "values": {
+        "2018": 277,
+        "2019": 237,
+        "2020": 134,
+        "2021": 283,
+        "2022": 227
+      }
+    },
+    {
+      "stateId": "18",
+      "name": "Assam",
+      "values": {
+        "2018": 8248,
+        "2019": 8350,
+        "2020": 6595,
+        "2021": 7411,
+        "2022": 7023
+      }
+    },
+    {
+      "stateId": "10",
+      "name": "Bihar",
+      "values": {
+        "2018": 9600,
+        "2019": 10007,
+        "2020": 8639,
+        "2021": 9553,
+        "2022": 10801
+      }
+    },
+    {
+      "stateId": "22",
+      "name": "Chhattisgarh",
+      "values": {
+        "2018": 13864,
+        "2019": 13899,
+        "2020": 11656,
+        "2021": 12375,
+        "2022": 13279
+      }
+    },
+    {
+      "stateId": "30",
+      "name": "Goa",
+      "values": {
+        "2018": 3709,
+        "2019": 3440,
+        "2020": 2375,
+        "2021": 2849,
+        "2022": 3011
+      }
+    },
+    {
+      "stateId": "24",
+      "name": "Gujarat",
+      "values": {
+        "2018": 18769,
+        "2019": 17046,
+        "2020": 13398,
+        "2021": 15186,
+        "2022": 15751
+      }
+    },
+    {
+      "stateId": "06",
+      "name": "Haryana",
+      "values": {
+        "2018": 11238,
+        "2019": 10944,
+        "2020": 9431,
+        "2021": 9933,
+        "2022": 10429
+      }
+    },
+    {
+      "stateId": "02",
+      "name": "Himachal Pradesh",
+      "values": {
+        "2018": 3110,
+        "2019": 2873,
+        "2020": 2239,
+        "2021": 2404,
+        "2022": 2597
+      }
+    },
+    {
+      "stateId": "20",
+      "name": "Jharkhand",
+      "values": {
+        "2018": 5394,
+        "2019": 5217,
+        "2020": 4405,
+        "2021": 4728,
+        "2022": 5175
+      }
+    },
+    {
+      "stateId": "29",
+      "name": "Karnataka",
+      "values": {
+        "2018": 41707,
+        "2019": 40658,
+        "2020": 34178,
+        "2021": 34647,
+        "2022": 39762
+      }
+    },
+    {
+      "stateId": "32",
+      "name": "Kerala",
+      "values": {
+        "2018": 40181,
+        "2019": 41111,
+        "2020": 27877,
+        "2021": 33296,
+        "2022": 43910
+      }
+    },
+    {
+      "stateId": "23",
+      "name": "Madhya Pradesh",
+      "values": {
+        "2018": 51397,
+        "2019": 50669,
+        "2020": 45266,
+        "2021": 48877,
+        "2022": 54432
+      }
+    },
+    {
+      "stateId": "27",
+      "name": "Maharashtra",
+      "values": {
+        "2018": 35717,
+        "2019": 32925,
+        "2020": 24971,
+        "2021": 29477,
+        "2022": 33383
+      }
+    },
+    {
+      "stateId": "14",
+      "name": "Manipur",
+      "values": {
+        "2018": 601,
+        "2019": 672,
+        "2020": 432,
+        "2021": 366,
+        "2022": 508
+      }
+    },
+    {
+      "stateId": "17",
+      "name": "Meghalaya",
+      "values": {
+        "2018": 399,
+        "2019": 482,
+        "2020": 214,
+        "2021": 245,
+        "2022": 246
+      }
+    },
+    {
+      "stateId": "15",
+      "name": "Mizoram",
+      "values": {
+        "2018": 53,
+        "2019": 62,
+        "2020": 53,
+        "2021": 69,
+        "2022": 133
+      }
+    },
+    {
+      "stateId": "13",
+      "name": "Nagaland",
+      "values": {
+        "2018": 430,
+        "2019": 358,
+        "2020": 500,
+        "2021": 746,
+        "2022": 489
+      }
+    },
+    {
+      "stateId": "21",
+      "name": "Odisha",
+      "values": {
+        "2018": 11262,
+        "2019": 11064,
+        "2020": 9817,
+        "2021": 10983,
+        "2022": 11663
+      }
+    },
+    {
+      "stateId": "03",
+      "name": "Punjab",
+      "values": {
+        "2018": 6428,
+        "2019": 6348,
+        "2020": 5203,
+        "2021": 5871,
+        "2022": 6138
+      }
+    },
+    {
+      "stateId": "08",
+      "name": "Rajasthan",
+      "values": {
+        "2018": 21743,
+        "2019": 23480,
+        "2020": 19114,
+        "2021": 20951,
+        "2022": 23614
+      }
+    },
+    {
+      "stateId": "11",
+      "name": "Sikkim",
+      "values": {
+        "2018": 180,
+        "2019": 162,
+        "2020": 138,
+        "2021": 155,
+        "2022": 211
+      }
+    },
+    {
+      "stateId": "33",
+      "name": "Tamil Nadu",
+      "values": {
+        "2018": 67279,
+        "2019": 62685,
+        "2020": 49844,
+        "2021": 55682,
+        "2022": 64105
+      }
+    },
+    {
+      "stateId": "36",
+      "name": "Telangana",
+      "values": {
+        "2018": 22230,
+        "2019": 21570,
+        "2020": 19172,
+        "2021": 21315,
+        "2022": 21619
+      }
+    },
+    {
+      "stateId": "16",
+      "name": "Tripura",
+      "values": {
+        "2018": 552,
+        "2019": 655,
+        "2020": 466,
+        "2021": 479,
+        "2022": 575
+      }
+    },
+    {
+      "stateId": "05",
+      "name": "Uttarakhand",
+      "values": {
+        "2018": 1468,
+        "2019": 1352,
+        "2020": 1041,
+        "2021": 1405,
+        "2022": 1674
+      }
+    },
+    {
+      "stateId": "09",
+      "name": "Uttar Pradesh",
+      "values": {
+        "2018": 42568,
+        "2019": 42572,
+        "2020": 34243,
+        "2021": 37729,
+        "2022": 41746
+      }
+    },
+    {
+      "stateId": "19",
+      "name": "West Bengal",
+      "values": {
+        "2018": 12705,
+        "2019": 12658,
+        "2020": 10863,
+        "2021": 11937,
+        "2022": 13686
+      }
+    },
+    {
+      "stateId": "35",
+      "name": "Andaman and Nicobar Islands",
+      "values": {
+        "2018": 254,
+        "2019": 230,
+        "2020": 141,
+        "2021": 115,
+        "2022": 141
+      }
+    },
+    {
+      "stateId": "04",
+      "name": "Chandigarh",
+      "values": {
+        "2018": 316,
+        "2019": 305,
+        "2020": 159,
+        "2021": 208,
+        "2022": 237
+      }
+    },
+    {
+      "stateId": "38",
+      "name": "Dadra and Nagar Haveli and Daman and Diu",
+      "values": {
+        "2018": 156,
+        "2019": 137,
+        "2020": 100,
+        "2021": 140,
+        "2022": 196
+      }
+    },
+    {
+      "stateId": "07",
+      "name": "Delhi",
+      "values": {
+        "2018": 6515,
+        "2019": 5610,
+        "2020": 4178,
+        "2021": 4720,
+        "2022": 5652
+      }
+    },
+    {
+      "stateId": "01",
+      "name": "Jammu and Kashmir",
+      "values": {
+        "2018": 5978,
+        "2019": 5796,
+        "2020": 4860,
+        "2021": 5452,
+        "2022": 6092
+      }
+    },
+    {
+      "stateId": "37",
+      "name": "Ladakh",
+      "values": {
+        "2018": null,
+        "2019": null,
+        "2020": null,
+        "2021": 236,
+        "2022": 374
+      }
+    },
+    {
+      "stateId": "31",
+      "name": "Lakshadweep",
+      "values": {
+        "2018": 3,
+        "2019": 1,
+        "2020": 1,
+        "2021": 4,
+        "2022": 3
+      }
+    },
+    {
+      "stateId": "34",
+      "name": "Puducherry",
+      "values": {
+        "2018": 1597,
+        "2019": 1392,
+        "2020": 969,
+        "2021": 1049,
+        "2022": 1181
+      }
+    }
+  ],
+  "notes": [
+    "Jammu and Kashmir includes Ladakh for 2018\u20132020; separate Ladakh data are unavailable for those years.",
+    "Dadra and Nagar Haveli and Daman and Diu: pre-merger 2018\u20132019 rows are added; the Dadra and Nagar Haveli row already includes Daman and Diu for 2020\u20132022.",
+    "The bundled CSV has an extra blank field in the Himachal Pradesh row; corrected to match the government table. The stray Daman and Diu 2020\u20132021 cells are excluded because those totals are already included in the merged UT."
+  ]
+}

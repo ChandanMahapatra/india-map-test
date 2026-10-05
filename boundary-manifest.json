@@ -1,0 +1,45 @@
+{
+	"representation": "India",
+	"sources": [
+		{
+			"id": "country",
+			"label": "India",
+			"url": "india-country.geojson",
+			"nameProperty": "name",
+			"idProperty": "id",
+			"provenance": {
+				"name": "Survey of India / NWIC",
+				"url": "https://nwdp.nwic.gov.in/dataset/state-boundary",
+				"date": "Retrieved 4 October 2026",
+				"notes": "Country outline dissolved from the government-published state boundaries. Generalized for display; not a certified survey product."
+			}
+		},
+		{
+			"id": "state",
+			"label": "States & union territories",
+			"url": "india-states.geojson",
+			"nameProperty": "name",
+			"idProperty": "id",
+			"provenance": {
+				"name": "Survey of India / NWIC",
+				"url": "https://nwdp.nwic.gov.in/dataset/state-boundary",
+				"date": "Retrieved 4 October 2026",
+				"notes": "36 states and union territories. Source identifies Survey of India as producer. Reprojected and generalized for web display."
+			}
+		},
+		{
+			"id": "district",
+			"label": "Districts",
+			"url": "districts/{stateId}.geojson",
+			"nameProperty": "name",
+			"idProperty": "id",
+			"parentProperty": "state_id",
+			"provenance": {
+				"name": "Survey of India / NWIC",
+				"url": "https://nwdp.nwic.gov.in/dataset/district-boundary",
+				"date": "Portal snapshot: 5 May 2025",
+				"notes": "733 source districts; later reorganizations may not be included. District and state snapshots can differ. Retrieved 4 October 2026; generalized for display."
+			}
+		}
+	]
+}
